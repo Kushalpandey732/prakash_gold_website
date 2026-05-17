@@ -1,9 +1,11 @@
 import { Route, Routes, useLocation } from "react-router-dom";
+import { AppReadyProvider } from "./context/AppReadyContext";
+import LoadingScreen from "./components/LoadingScreen";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import FoundersPage from "./pages/FoundersPage";
-import CompanyPage from "./pages/CompanyPage";
+import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 
 function App() {
@@ -11,18 +13,22 @@ function App() {
   const isHome = location.pathname === "/";
 
   return (
-    <div className="app-shell">
+    <AppReadyProvider>
+      <LoadingScreen />
+      <div className="app-shell">
       <Navbar />
       <main className={`page-container ${isHome ? "home-main" : "inner-main"}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/company" element={<AboutPage />} />
           <Route path="/founders" element={<FoundersPage />} />
-          <Route path="/company" element={<CompanyPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>
       <Footer />
     </div>
+    </AppReadyProvider>
   );
 }
 

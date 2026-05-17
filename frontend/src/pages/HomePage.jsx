@@ -1,53 +1,93 @@
-import { motion } from "framer-motion";
-import { Box, Button, Chip, Stack, Typography } from "@mui/material";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
+import { useRef } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import Marquee from "react-fast-marquee";
+import { homeCategories, homeEditorial } from "../data/content";
+import { useAppReady } from "../context/AppReadyContext";
+import HomeHero from "../components/HomeHero";
+import HomeCategoryGrid from "../components/HomeCategoryGrid";
+import HomeEditorialBlock from "../components/HomeEditorialBlock";
 
-const heroImages = [
-  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1900&q=80",
-  "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1900&q=80",
-  "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=1900&q=80",
-];
+function HomeCTA() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
+
+  return (
+    <Box ref={ref} className="home-cta-parallax">
+      <motion.div className="home-cta-inner" style={{ y }}>
+        <Typography className="section-eyebrow" sx={{ textAlign: "center" }}>
+          Prakash Gold LLC
+        </Typography>
+        <Typography component="h2" className="section-title" sx={{ textAlign: "center", maxWidth: 640, mx: "auto" }}>
+          Someone You Can Call
+        </Typography>
+        <Typography className="section-lead" sx={{ textAlign: "center", mx: "auto", mt: 2 }}>
+          No layers. No middlemen. Direct access to the people whose names are on the door.
+        </Typography>
+        <Stack direction={{ xs: "column", sm: "row" }} gap={1.5} justifyContent="center" mt={3}>
+          <Button variant="contained" size="large" component={RouterLink} to="/founders">
+            Meet the Founders
+          </Button>
+          <Button variant="outlined" size="large" component={RouterLink} to="/contact">
+            Get in Touch
+          </Button>
+        </Stack>
+      </motion.div>
+    </Box>
+  );
+}
 
 function HomePage() {
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-      <Box className="home-hero-fullscreen">
-        <Swiper
-          modules={[Autoplay, Pagination]}
-          autoplay={{ delay: 3200, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          loop
-          className="hero-image-swiper"
-        >
-          {heroImages.map((image) => (
-            <SwiperSlide key={image}>
-              <Box className="hero-image-slide" sx={{ backgroundImage: `url(${image})` }} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+  const appReady = useAppReady();
+  const pageRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: pageRef, offset: ["start start", "end end"] });
+  const progressOpacity = useTransform(scrollYProgress, [0, 0.03, 1], [0, 1, 1]);
 
-        <Box className="hero-overlay-content">
-          <Chip label="Luxury Jewelry House" color="primary" variant="filled" />
-          <Typography variant="h2" mt={2}>
-            Timeless Elegance, Crafted for a Global Legacy
-          </Typography>
-          <Typography className="hero-overlay-subtitle" mt={1.5}>
-            Experience a premium digital showroom with signature collections, private
-            consultations, and handcrafted masterpieces from Prakash Gold.
-          </Typography>
-          <Stack direction={{ xs: "column", sm: "row" }} gap={1.5} mt={3}>
-            <Button variant="contained" size="large">
-              Explore Collections
-            </Button>
-            <Button variant="outlined" color="inherit" size="large">
-              Schedule a Consultation
-            </Button>
-          </Stack>
-        </Box>
+  return (
+    <motion.div
+      ref={pageRef}
+      className="home-page"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: appReady ? 1 : 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        className="about-scroll-progress home-scroll-progress"
+        style={{ scaleX: scrollYProgress, opacity: progressOpacity }}
+        aria-hidden
+      />
+
+      <HomeHero />
+
+      <Box className="trust-strip">
+        <Marquee speed={28} gradient={false} pauseOnHover>
+          {[
+            "Gold & Diamond Jewellery",
+            "Bullion Markets",
+            "Manufacturing",
+            "Supply Chain",
+            "GCC Trade",
+            "Direct Partnership",
+          ].map((item) => (
+            <span key={item} className="trust-strip-item">
+              {item}
+            </span>
+          ))}
+        </Marquee>
       </Box>
+
+      <HomeCategoryGrid categories={homeCategories} />
+
+      {homeEditorial.map((block, index) => (
+        <HomeEditorialBlock key={block.title} block={block} reverse={index % 2 === 1} />
+      ))}
+
+      <HomeCTA />
     </motion.div>
   );
 }
