@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Box, Button, Typography } from "@mui/material";
-import { aboutContent, aboutImages } from "../data/content";
+import { aboutContent, aboutHeroVideo, aboutImages } from "../data/content";
 import AboutHeroParallax from "../components/AboutHeroParallax";
 import AboutImage from "../components/AboutImage";
 import AboutMedia from "../components/AboutMedia";
@@ -88,7 +88,7 @@ function AboutPage() {
         aria-hidden
       />
 
-      <AboutHeroParallax imageSrc={aboutImages.hero} />
+      <AboutHeroParallax videoSrc={aboutHeroVideo} imageSrc={aboutImages.hero} />
 
       <div className="about-prose-wrap">
         <motion.div

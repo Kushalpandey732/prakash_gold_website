@@ -8,6 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import ContactMapBackground from "../components/ContactMapBackground";
+import AppointmentModal from "../components/AppointmentModal";
+import OurStoresSection from "../components/OurStoresSection";
 
 const initialForm = {
   name: "",
@@ -17,6 +19,7 @@ const initialForm = {
 };
 
 function ContactPage() {
+  const [appointmentOpen, setAppointmentOpen] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState({ loading: false, message: "" });
 
@@ -67,31 +70,10 @@ function ContactPage() {
           </Typography>
         </Box>
 
-        <Box className="contact-layout-minimal">
-          <Box className="contact-info-grid">
-            <Box className="contact-info-cell">
-              <Typography className="contact-info-label">Dubai</Typography>
-              <Typography className="contact-info-value">
-                United Arab Emirates
-                <br />
-                <span className="contact-info-detail">Gold Souk Area, Deira</span>
-              </Typography>
-            </Box>
-            <Box className="contact-info-cell">
-              <Typography className="contact-info-label">Email</Typography>
-              <Typography className="contact-info-value">
-                <a href="mailto:info@prakashgold.com">info@prakashgold.com</a>
-              </Typography>
-            </Box>
-            <Box className="contact-info-cell">
-              <Typography className="contact-info-label">Phone</Typography>
-              <Typography className="contact-info-value">
-                <a href="tel:+971501234567">+971 50 123 4567</a>
-              </Typography>
-            </Box>
-          </Box>
+        <Box className="contact-main-row">
+          <OurStoresSection inline onBookAppointment={() => setAppointmentOpen(true)} />
 
-          <Box className="contact-form-section">
+          <Box id="contact-form" className="contact-form-section">
             <Typography component="h2">Schedule a conversation</Typography>
             <form onSubmit={onSubmit} className="minimal-form">
               <TextField
@@ -150,6 +132,8 @@ function ContactPage() {
           </Box>
         </Box>
       </div>
+
+      <AppointmentModal open={appointmentOpen} onClose={() => setAppointmentOpen(false)} />
     </motion.div>
   );
 }

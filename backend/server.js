@@ -14,9 +14,26 @@ app.get("/api/health", (req, res) => {
 });
 
 app.post("/api/enquiry", async (req, res) => {
-  const { name, email, phone, schedule } = req.body;
+  const {
+    formType,
+    name,
+    email,
+    phone,
+    schedule,
+    subject,
+    companyName,
+    location,
+    service,
+    message,
+  } = req.body;
 
-  if (!name || !email || !phone || !schedule) {
+  const isAppointment = formType === "appointment";
+
+  if (isAppointment) {
+    if (!name || !email || !phone || !subject || !location || !service || !message) {
+      return res.status(400).json({ message: "Please complete all required fields." });
+    }
+  } else if (!name || !email || !phone || !schedule) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
@@ -36,14 +53,44 @@ app.post("/api/enquiry", async (req, res) => {
       },
     });
 
+    const subjectLabel =
+      subject === "book" ? "Book an Appointment" : subject === "enquire" ? "Enquire" : subject;
+    const locationLabel =
+      location === "virtual"
+        ? "Virtual Appointment"
+        : location === "instore"
+          ? "In-store Appointment"
+          : location;
+
+    const mailSubject = isAppointment
+      ? `Appointment Request — ${subjectLabel} - Prakash Gold`
+      : "New Enquiry - Prakash Gold";
+
+    const mailText = isAppointment
+      ? [
+          `Name: ${name}`,
+          `Email: ${email}`,
+          `Phone: ${phone}`,
+          `Subject: ${subjectLabel}`,
+          `Company: ${companyName || "—"}`,
+          `Location: ${locationLabel}`,
+          `Service: ${service}`,
+          `Message:\n${message}`,
+        ].join("\n")
+      : `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nSchedule: ${schedule}`;
+
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: process.env.RECEIVER_EMAIL || process.env.SMTP_USER,
-      subject: "New Enquiry - Prakash Gold",
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nSchedule: ${schedule}`,
+      subject: mailSubject,
+      text: mailText,
     });
 
-    return res.status(200).json({ message: "Enquiry submitted successfully." });
+    return res.status(200).json({
+      message: isAppointment
+        ? "Your appointment request has been received. We will be in touch shortly."
+        : "Enquiry submitted successfully.",
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Unable to process enquiry right now.",

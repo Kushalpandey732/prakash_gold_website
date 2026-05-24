@@ -160,6 +160,8 @@ export const aboutBlocks = [
 export const prakashTimeline = [
   {
     era: "1980s",
+    image: aboutImages.heritage,
+    imageAlt: "Heritage and early roots in Rajasthan",
     title: "The Beginning",
     subtitle: "Early Lessons in Rajasthan",
     body: [
@@ -173,6 +175,8 @@ export const prakashTimeline = [
   },
   {
     era: "1990",
+    image: aboutImages.workshop,
+    imageAlt: "Craft and determination in Mumbai",
     title: "A Leap of Courage",
     subtitle: "Into the Unknown",
     body: [
@@ -183,6 +187,8 @@ export const prakashTimeline = [
   },
   {
     era: "1994",
+    image: aboutImages.dubai,
+    imageAlt: "Dubai and the gold trade",
     title: "New Horizons",
     subtitle: "Dubai & the Gold Trade",
     body: [
@@ -196,6 +202,8 @@ export const prakashTimeline = [
   },
   {
     era: "2000's",
+    image: aboutImages.trade,
+    imageAlt: "International gold and jewellery trade",
     title: "A Decade of Trust",
     subtitle: "From Employee to Partner",
     body: [
@@ -207,6 +215,8 @@ export const prakashTimeline = [
   },
   {
     era: "2015",
+    image: aboutImages.craft,
+    imageAlt: "Gold craftsmanship at scale",
     title: "A Record Written in Gold",
     subtitle: "The World's Longest Gold Chain",
     body: [
@@ -217,6 +227,8 @@ export const prakashTimeline = [
   },
   {
     era: "2022",
+    image: aboutImages.diamonds,
+    imageAlt: "Diamond and gold jewellery",
     title: "Shaping Global Trade",
     subtitle: "The UAE-India CEPA Milestone",
     body: [
@@ -227,6 +239,8 @@ export const prakashTimeline = [
   },
   {
     era: "2024",
+    image: aboutImages.showcase,
+    imageAlt: "Fine gold jewellery showcase",
     title: "Consistency As a Legacy",
     subtitle: "Fourteen Years at the Summit",
     body: [
@@ -236,6 +250,8 @@ export const prakashTimeline = [
   },
   {
     era: "2025",
+    image: aboutImages.hero,
+    imageAlt: "Prakash Gold LLC — the next chapter",
     title: "The Next Chapter",
     subtitle: "Prakash Gold LLC",
     body: [
@@ -248,26 +264,108 @@ export const prakashTimeline = [
   },
 ];
 
+export const phoneCountryCodes = [
+  { dial: "+971", label: "UAE (+971)" },
+  { dial: "+91", label: "India (+91)" },
+  { dial: "+966", label: "Saudi Arabia (+966)" },
+  { dial: "+974", label: "Qatar (+974)" },
+  { dial: "+965", label: "Kuwait (+965)" },
+  { dial: "+968", label: "Oman (+968)" },
+  { dial: "+973", label: "Bahrain (+973)" },
+  { dial: "+44", label: "UK (+44)" },
+  { dial: "+1", label: "USA / Canada (+1)" },
+  { dial: "+61", label: "Australia (+61)" },
+  { dial: "+65", label: "Singapore (+65)" },
+  { dial: "+852", label: "Hong Kong (+852)" },
+  { dial: "+33", label: "France (+33)" },
+  { dial: "+49", label: "Germany (+49)" },
+];
+
+export const appointmentSubjects = [
+  { value: "enquire", label: "Enquire" },
+  { value: "book", label: "Book an Appointment" },
+];
+
+export const appointmentLocations = [
+  { value: "virtual", label: "Virtual Appointment" },
+  { value: "instore", label: "In-store Appointment" },
+];
+
+export const appointmentServices = [
+  "Gold Jewellery",
+  "Diamonds & Precious Stones",
+  "Bullion & Trade",
+  "Manufacturing & Bespoke",
+  "High-Value Trade Consultation",
+  "Other",
+];
+
+/** Contact page — Our Store card (override: /images/contact-store.png in public/images/) */
+export const contactStore = {
+  city: "Dubai",
+  address: "Gold Souk Area, Deira",
+  addressLine2: "United Arab Emirates",
+  phone: "+971 50 123 4567",
+  phoneHref: "tel:+971501234567",
+  email: "info@prakashgold.com",
+  emailHref: "mailto:info@prakashgold.com",
+  image: aboutImages.showcase,
+  imageAlt: "Fine gold jewellery — Prakash Gold Dubai",
+};
+
+/** Timeline drawer hero — images in frontend/public/images/ */
+export const timelineHero = {
+  kicker: "Prakash Gold LLC",
+  name: "Prakash Jain",
+  images: [
+    {
+      src: "/images/timeline-hero-left.png",
+      alt: "Gold and diamond jewellery",
+    },
+    {
+      src: "/images/timeline-hero-right.png",
+      alt: "Fine gold jewellery",
+    },
+  ],
+};
+
 /** Placeholder until founder interview footage is available */
 export const founderDummyVideo =
   "https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-golden-necklace-398-large.mp4";
+
+/** Hero banner background — file in frontend/public/hero.mp4 */
+export const heroBannerVideo = "/hero.mp4";
+
+/** About Us hero background — file in frontend/public/aboutus.mp4 */
+export const aboutHeroVideo = "/aboutus.mp4";
+
+/** Leadership hero background — file in frontend/public/leadership.mp4 */
+export const leadershipHeroVideo = "/leadership.mp4";
+
+/** Floating social widget — add href when profiles are ready */
+export const socialLinks = [
+  { id: "whatsapp", label: "WhatsApp" },
+  { id: "instagram", label: "Instagram" },
+  { id: "snapchat", label: "Snapchat" },
+];
 
 export const founders = [
   {
     id: "prakash",
     name: "Prakash Jain",
     role: "Managing Director",
+    /** Replace with /founders/prakash.mp4 when interview footage is ready */
+    video: founderDummyVideo,
     tagline:
       "A small village in Rajasthan. A father's shop. A city that didn't know his name. A foreign country and thirty-two years of earning the trust of an entire industry — and now, finally, Prakash Gold LLC.",
     bio: null,
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
     hasTimeline: true,
   },
   {
     id: "hiren",
     name: "Hiren A. Patt",
     role: "Chief Executive Officer",
+    video: founderDummyVideo,
     tagline: "Gold isn't something Hiren A. Patt came to. It's something he was born into.",
     bio: [
       "His grandfather first set foot in Dubai in 1954 — long before it was the city it is today. Three generations later, the family's connection to the jewellery trade runs deeper than most people's entire careers.",
@@ -277,8 +375,19 @@ export const founders = [
       "By the time he moved into sales, he carried something rare — the eye of a craftsman and the instincts of a businessman. He knew how jewellery was made before he ever learned how to sell it. And that changes everything about how you sell it.",
       "Three generations of knowledge. A lifetime of work. And at Prakash Gold LLC — for the first time — all of it, his.",
     ],
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=1200&q=80",
+    hasTimeline: false,
+  },
+  {
+    id: "arpit",
+    name: "Arpit Jain",
+    role: "Director",
+    video: founderDummyVideo,
+    tagline:
+      "The next generation of Prakash Gold — carrying forward trust, craft, and relationships across the GCC.",
+    bio: [
+      "Arpit Jain works at the centre of Prakash Gold LLC's day-to-day growth — connecting clients, operations, and the standards the business has built over three decades.",
+      "Alongside Prakash Jain and Hiren A. Patt, he helps extend the firm's reach in gold and diamond jewellery, bullion, manufacturing, and high-value trade — with the same focus on relationships that define the name.",
+    ],
     hasTimeline: false,
   },
 ];

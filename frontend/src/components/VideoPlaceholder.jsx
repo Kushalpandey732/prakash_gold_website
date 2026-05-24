@@ -7,6 +7,8 @@ function VideoPlaceholder({
   label = "Video",
   src = founderDummyVideo,
   poster,
+  className = "",
+  hideLabel = false,
 }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
@@ -18,8 +20,18 @@ function VideoPlaceholder({
     video.play().catch(() => setPlaying(false));
   };
 
+  const primeThumbnail = () => {
+    const video = videoRef.current;
+    if (!video || poster || playing) return;
+    if (video.currentTime < 0.01) {
+      video.currentTime = 0.01;
+    }
+  };
+
   return (
-    <Box className={`video-placeholder${playing ? " is-playing" : ""}`}>
+    <Box
+      className={`video-placeholder${playing ? " is-playing" : ""}${className ? ` ${className}` : ""}`}
+    >
       <video
         ref={videoRef}
         className="video-placeholder-media"
@@ -28,6 +40,7 @@ function VideoPlaceholder({
         controls={playing}
         playsInline
         preload="metadata"
+        onLoadedMetadata={primeThumbnail}
         onPause={() => {
           if (videoRef.current?.currentTime === 0) setPlaying(false);
         }}
@@ -44,9 +57,11 @@ function VideoPlaceholder({
           >
             <FaPlay />
           </button>
-          <Typography variant="body2" className="video-placeholder-label">
-            {label}
-          </Typography>
+          {!hideLabel ? (
+            <Typography variant="body2" className="video-placeholder-label">
+              {label}
+            </Typography>
+          ) : null}
         </>
       ) : null}
     </Box>

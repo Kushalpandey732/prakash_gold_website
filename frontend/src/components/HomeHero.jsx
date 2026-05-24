@@ -4,17 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Box, Button, Typography } from "@mui/material";
 import BrandLogo from "./BrandLogo";
 import { useAppReady } from "../context/AppReadyContext";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";
-
-const heroImages = [
-  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=2000&q=80",
-  "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=2000&q=80",
-  "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=2000&q=80",
-];
+import { heroBannerVideo } from "../data/content";
 
 const heroEase = [0.22, 1, 0.36, 1];
 
@@ -45,24 +35,25 @@ const heroLogo = {
   },
 };
 
-function preloadHeroImages(urls) {
-  return Promise.all(
-    urls.map(
-      (src) =>
-        new Promise((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve(src);
-          img.onerror = () => resolve(src);
-          img.src = src;
-        })
-    )
-  );
+function preloadHeroVideo(src) {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    video.preload = "auto";
+    video.muted = true;
+    video.playsInline = true;
+    const finish = () => resolve(src);
+    video.addEventListener("canplay", finish, { once: true });
+    video.addEventListener("error", finish, { once: true });
+    video.src = src;
+    video.load();
+  });
 }
 
 function HomeHero() {
   const appReady = useAppReady();
   const [bannerReady, setBannerReady] = useState(false);
   const ref = useRef(null);
+  const videoRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -77,7 +68,7 @@ function HomeHero() {
     if (!appReady) return undefined;
 
     let cancelled = false;
-    preloadHeroImages(heroImages).then(() => {
+    preloadHeroVideo(heroBannerVideo).then(() => {
       if (!cancelled) setBannerReady(true);
     });
 
@@ -85,6 +76,16 @@ function HomeHero() {
       cancelled = true;
     };
   }, [appReady]);
+
+  useEffect(() => {
+    if (!bannerReady) return undefined;
+    const video = videoRef.current;
+    if (!video) return undefined;
+
+    video.play().catch(() => {});
+
+    return undefined;
+  }, [bannerReady]);
 
   const heroReveal = bannerReady;
 
@@ -101,22 +102,16 @@ function HomeHero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.1, ease: heroEase }}
           >
-            <Swiper
-              modules={[Autoplay, Pagination, EffectFade]}
-              effect="fade"
-              fadeEffect={{ crossFade: true }}
-              autoplay={{ delay: 4500, disableOnInteraction: false }}
-              pagination={{ clickable: true }}
+            <video
+              ref={videoRef}
+              className="home-hero-video"
+              src={heroBannerVideo}
+              autoPlay
+              muted
               loop
-              speed={900}
-              className="hero-image-swiper home-hero-swiper"
-            >
-              {heroImages.map((image) => (
-                <SwiperSlide key={image}>
-                  <Box className="hero-image-slide" sx={{ backgroundImage: `url(${image})` }} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+              playsInline
+              aria-hidden
+            />
           </motion.div>
         ) : null}
       </motion.div>
@@ -157,14 +152,13 @@ function HomeHero() {
 
           <motion.div variants={heroItem}>
             <Typography component="h1" className="hero-title">
-              <span className="hero-title-line">Trust Is The</span>
-              <span className="hero-title-line">Business</span>
+              Trust Is The Business
             </Typography>
           </motion.div>
 
           <motion.div variants={heroItem}>
             <Typography className="hero-subtitle">
-              Thirty-two years of gold and diamond expertise — relationships, craft, and trade across the GCC.
+              Thirty-two years of gold and diamond expertise in relationships, craft, and trade across the GCC.
             </Typography>
           </motion.div>
 
@@ -192,10 +186,6 @@ function HomeHero() {
           </motion.div>
         </motion.div>
       </motion.div>
-
-      <Typography className="home-hero-scroll-hint" sx={{ opacity: heroReveal ? 1 : 0 }}>
-        Scroll
-      </Typography>
 
       <Box className="home-hero-bottom-blend" aria-hidden />
     </Box>

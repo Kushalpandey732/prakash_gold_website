@@ -3,6 +3,7 @@ import { AppReadyProvider } from "./context/AppReadyContext";
 import LoadingScreen from "./components/LoadingScreen";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import SocialWidget from "./components/SocialWidget";
 import HomePage from "./pages/HomePage";
 import FoundersPage from "./pages/FoundersPage";
 import AboutPage from "./pages/AboutPage";
@@ -15,7 +16,7 @@ function App() {
   return (
     <AppReadyProvider>
       <LoadingScreen />
-      <div className="app-shell">
+      <div className={`app-shell${isHome ? " app-shell--home" : ""}`}>
       <Navbar />
       <main className={`page-container ${isHome ? "home-main" : "inner-main"}`}>
         <Routes>
@@ -26,7 +27,8 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>
-      <Footer />
+      {!isHome && <Footer />}
+      <SocialWidget />
     </div>
     </AppReadyProvider>
   );
